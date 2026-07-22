@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+
+:root {
+  --inv-bg: #ded7c7;
+  --inv-base: #604024;
+  --inv-accent: #9F709A;
+  --inv-border: #747254;
+  --menu-bg: #fffff9;
+  --menu-inactive: #747254;
+  --menu-active: #9F709A;
+  --btn-color: #ffffff;
+  --font-base: "Marcellus", serif;
+  --font-accent: "Against", sans-serif;
+  --font-latin: "English111 Vivace BT", cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--inv-bg);
+  color: var(--inv-base);
+  overflow-x: hidden;
+}
+
+/* Kunci scroll sebelum Open Invitation diklik */
+body.not-open {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+.satumomen_track {
+  width: 100%;
+}
+
+.satumomen_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base Slide Layout */
+.satumomen_slide {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Slide Cover Utama */
+.satumomen_cover {
+  height: 100vh;
+  padding: 0;
+  background-image: url(/images/bg.webp);
+}
+
+/* Slide Isi Undangan (Menggunakan background tekstur cream bg2.webp) */
+.satumomen_slide:not(.satumomen_cover) {
+  background-image: url(/images/bg2.webp);
+  background-size: cover;
+  background-position: center;
+}
+
+.container-mobile {
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.workspace {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- ANIMASI AMBIENT GOYANG BUNGA (WAVE ANIMATION) --- */
+@keyframes wave-left {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(4deg); }
+}
+
+@keyframes wave-right {
+  0% { transform: rotate(3deg); }
+  100% { transform: rotate(-4deg); }
+}
+
+.wave-left img {
+  animation: wave-left 4s ease-in-out infinite alternate;
+}
+
+.wave-right img {
+  animation: wave-right 4s ease-in-out infinite alternate;
+}
+
+/* --- CONTROL ANIMASI SCROLL (Animate.css Integration) --- */
+.animate__animated {
+  animation-play-state: paused !important;
+  opacity: 0;
+}
+
+.is-visible.animate__animated {
+  animation-play-state: running !important;
+  opacity: 1 !important;
+}
+
+/* --- LOADER STYLING --- */
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader-wrapper.loaded {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--inv-accent);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- FLOATING ACTION BUTTONS --- */
+.floating-action {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 999;
+}
+
+.btn-float {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--inv-accent);
+  color: white;
+  border: none;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+.font-accent { font-family: var(--font-accent), serif; }
+.font-latin { font-family: var(--font-latin), cursive; }
