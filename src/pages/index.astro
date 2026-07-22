@@ -12,7 +12,38 @@ import '../styles/global.css';
 
 const title = "Undangan Pernikahan — Fahrul & Ainun";
 const description = "Undangan pernikahan Muhammad Fahrul Azali, S.IP & Ainun Ulfa, S.Kep., Ns — Sabtu, 08 Agustus 2026 di Kab. Majene, Sulawesi Barat.";
-const ogImage = "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
+
+// URL situs diambil dari `site` di astro.config.mjs (cukup ganti domain di sana sekali).
+const siteUrl = (Astro.site?.href ?? "https://undanganulfahrul.ijlalcode.my.id").replace(/\/$/, "");
+const canonical = siteUrl + "/";
+const ogImage = siteUrl + "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
+
+// Data terstruktur (Schema.org Event) — membantu Google & AI memahami acara ini.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: "Pernikahan Muhammad Fahrul Azali & Ainun Ulfa",
+  description,
+  startDate: "2026-08-08T10:30:00+08:00",
+  endDate: "2026-08-08T22:00:00+08:00",
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  image: [ogImage],
+  url: canonical,
+  location: {
+    "@type": "Place",
+    name: "Kediaman Mempelai (Baurung)",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Baurung, Kec. Banggae Timur",
+      addressLocality: "Majene",
+      addressRegion: "Sulawesi Barat",
+      postalCode: "91412",
+      addressCountry: "ID",
+    },
+  },
+  organizer: { "@type": "Person", name: "Fahrul & Ainun" },
+};
 ---
 
 <!DOCTYPE html>
@@ -23,10 +54,29 @@ const ogImage = "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
   <meta name="color-scheme" content="light only" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="keywords" content="undangan pernikahan, undangan digital, Fahrul dan Ainun, wedding invitation, Majene, Sulawesi Barat, pernikahan 2026, tema Bugis" />
+  <meta name="author" content="Fahrul & Ainun" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content="#241a19" />
+  <!-- GANTI kode di bawah dengan kode dari Google Search Console (metode verifikasi "Tag HTML") -->
+  <meta name="google-site-verification" content="GANTI_DENGAN_KODE_VERIFIKASI_ANDA" />
+  <!-- Open Graph (WhatsApp, Facebook, dll.) -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Undangan Pernikahan Fahrul & Ainun" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:url" content={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={ogImage} />
+  <meta property="og:image:alt" content="Undangan Pernikahan Fahrul & Ainun" />
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <!-- Data terstruktur Schema.org untuk Google & AI -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -86,12 +136,15 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 .btn-maroon:hover{background:#7a0d22}
 
 /* ================= COVER ================= */
-.cover{min-height:100vh;display:flex;justify-content:center;align-items:stretch;padding:0;
+.cover{position:relative;min-height:100vh;display:flex;justify-content:center;align-items:stretch;padding:0;
   background:linear-gradient(rgba(11,5,5,.55),rgba(150,17,42,.72)), url('/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp');
   background-size:cover;background-position:center;background-attachment:scroll}
-.cover .col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;min-height:100vh;padding:0 var(--pad);width:100%}
+.cover .col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;min-height:100vh;padding:0 var(--pad);width:100%;
+  padding-bottom:clamp(72px,16.5vw,340px)}
 .cover .strip{width:auto;margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad))}
 .cover .strip img{width:100%;height:auto;display:block}
+/* Ornamen Bugis bawah: dikunci menempel di dasar cover, full-bleed, tanpa celah & tidak ikut naik */
+.cover .strip.bottom{position:absolute;left:0;right:0;bottom:0;width:100%;margin:0;z-index:2}
 .cover .strip.bottom img{transform:scaleY(-1)}
 /* Bugis border sebagai pembatas antar section (full-bleed kiri-kanan, tidak terpotong kecil) */
 .secdiv{width:100%;line-height:0;font-size:0;margin:0}
@@ -258,28 +311,29 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 <main id="app">
 <ul class="sections">
 
-  <!-- 1. COVER -->
+  <!-- 1. COVER (tanpa animasi reveal — langsung tampil) -->
   <li class="cover">
     <div class="col">
       <div class="cover-top">
-        <div class="strip top animate fadeInDown"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
-        <img class="logonama animate zoomIn" src="/images/logonama.webp" alt="Fahrul &amp; Ainun" />
+        <div class="strip top"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
+        <img class="logonama" src="/images/logonama.webp" alt="Fahrul &amp; Ainun" />
       </div>
       <div>
-        <div class="eyebrow animate fadeInDown">The Wedding Of</div>
-        <div class="title animate zoomIn">Fahrul &amp; Ainun</div>
-        <div class="date animate fadeInUp">Sabtu, 08 Agustus 2026</div>
+        <div class="eyebrow">The Wedding Of</div>
+        <div class="title">Fahrul &amp; Ainun</div>
+        <div class="date">Sabtu, 08 Agustus 2026</div>
       </div>
       <div style="width:100%">
-        <div class="guest-card animate fadeInUp">
+        <div class="guest-card">
           <div class="to">Kepada Yth.<br />Bapak/Ibu/Saudara/i</div>
           <div class="name">Tamu Undangan</div>
           <div style="font-size:14px;color:var(--cream-lite)">di Tempat</div>
         </div>
-        <div class="open-wrap"><button class="btn btn-gold animate fadeInUp" id="btnOpen">Buka Undangan</button></div>
-        <div class="strip bottom animate fadeInUp" style="margin-top:20px"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
+        <div class="open-wrap"><button class="btn btn-gold" id="btnOpen">Buka Undangan</button></div>
       </div>
     </div>
+    <!-- Ornamen Bugis dikunci di dasar cover (tidak ikut naik, tanpa celah) -->
+    <div class="strip bottom"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
   </li>
 
   <!-- 2. PEMBUKA & AYAT -->
@@ -341,7 +395,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       </div>
       <div class="text animate fadeInUp">Pukul 10.30 WITA - Selesai</div>
       <div class="text animate fadeInUp">Bertempat di Kediaman Mempelai Wanita</div>
-      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-3.webp" alt="pembatas" /></div>
+      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></div>
       <div class="h-accent animate fadeInDown" style="font-size:36px;margin-bottom:4px">Resepsi</div>
       <div class="text animate fadeInDown" style="margin-bottom:8px">Sabtu,</div>
       <div class="datebox animate zoomIn">
