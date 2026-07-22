@@ -31,6 +31,8 @@ const ogImage = "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Marcellus&display=swap" />
+  <!-- Lenis smooth scroll (ringan ~10KB, otomatis di-cache browser) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <style>
 :root{
   --bg:#241a19; --panel:rgba(20,12,12,.55); --panel-solid:#2a1e1d;
@@ -41,12 +43,19 @@ const ogImage = "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
   --pad:clamp(20px,5vw,120px);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%}
+/* ===== Lenis smooth scroll ===== */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
 body{
   margin:0;padding:0;font-family:"Marcellus",serif;color:var(--cream);
-  overflow-x:hidden;-webkit-font-smoothing:antialiased;
-  background:var(--bg) url('/images/Com-BUGIS-BG.webp') top center / cover fixed;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;background:var(--bg);
 }
+/* Background sebagai layer terpisah: GPU-friendly & mulus dgn Lenis, tanpa jank 'fixed' di HP */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:var(--bg) url('/images/Com-BUGIS-BG.webp') top center / cover no-repeat}
 body.not-open,body.is-loading{overflow:hidden!important;height:100vh}
 img{max-width:100%;display:block}
 .font-accent{font-family:"Cormorant Garamond","Marcellus",serif;font-weight:600}
@@ -332,7 +341,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       </div>
       <div class="text animate fadeInUp">Pukul 10.30 WITA - Selesai</div>
       <div class="text animate fadeInUp">Bertempat di Kediaman Mempelai Wanita</div>
-      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></div>
+      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-3.webp" alt="pembatas" /></div>
       <div class="h-accent animate fadeInDown" style="font-size:36px;margin-bottom:4px">Resepsi</div>
       <div class="text animate fadeInDown" style="margin-bottom:8px">Sabtu,</div>
       <div class="datebox animate zoomIn">
@@ -431,6 +440,8 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 </ul>
 </main>
 
+<!-- Musik latar (ikut di-preload penuh saat loading) -->
+<audio id="bgm" src="/musics/song.mp3" loop preload="auto"></audio>
 <div class="fabs">
   <div class="fab" id="btnMusic" title="Musik">&#9835;</div>
 </div>
@@ -443,18 +454,43 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
   var intro=document.getElementById('intro');
   var video=document.getElementById('introVideo');
   var pct=document.getElementById('pct');var bar=document.getElementById('bar');
+  var bgm=document.getElementById('bgm');
   document.body.classList.add('is-loading','not-open');
+
+  /* ===== Lenis: dibuat sekarang, scroll dikunci sampai "Buka Undangan" ditekan ===== */
+  var lenis=null;
+  function initLenis(){
+    if(reduce||typeof Lenis==='undefined')return;
+    lenis=new Lenis({lerp:0.1,smoothWheel:true,wheelMultiplier:1,touchMultiplier:1.6});
+    function raf(t){lenis.raf(t);requestAnimationFrame(raf);}
+    requestAnimationFrame(raf);
+    lenis.stop();
+  }
+  function goTo(target){
+    if(lenis){lenis.scrollTo(target,{duration:1.4});return;}
+    if(typeof target==='number'){window.scrollTo({top:target,behavior:reduce?'auto':'smooth'});return;}
+    var el=document.querySelector(target);if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth'});
+  }
+
+  /* ===== PRELOAD SEMUA ASET (gambar + background CSS + video + musik + font) ===== */
   var imgs=[].slice.call(document.querySelectorAll('img[src]')).map(function(i){return i.getAttribute('src');});
-  var total=(imgs.length||1)+1,loaded=0;
+  imgs.push('/images/Com-BUGIS-BG.webp');                        // background body (dari CSS, tak ada tag <img>)
+  imgs=imgs.filter(function(v,i,a){return a.indexOf(v)===i;});   // buang duplikat
+  var total=imgs.length + 3 /* video + audio + font */, loaded=0;
   function upd(){var p=Math.min(100,Math.round(loaded/total*100));if(pct)pct.textContent=p;if(bar)bar.style.width=p+'%';}
-  function one(u){return new Promise(function(res){var im=new Image();im.onload=im.onerror=function(){loaded++;upd();res();};im.src=u;});}
-  function preloadVideo(){return new Promise(function(res){
-    try{ if(video){ video.load();
-      var done=function(){loaded++;upd();res();};
-      video.addEventListener('canplaythrough',done,{once:true});
-      video.addEventListener('error',done,{once:true});
-      setTimeout(done,5000);
-    } else { loaded++;upd();res(); } }catch(e){ loaded++;upd();res(); }
+  function bump(){loaded++;upd();}
+  function one(u){return new Promise(function(res){var im=new Image();im.onload=im.onerror=function(){bump();res();};im.src=u;});}
+  function preloadMedia(el){return new Promise(function(res){
+    var done=false,fin=function(){if(done)return;done=true;bump();res();};
+    try{ if(el){ el.load();
+      el.addEventListener('canplaythrough',fin,{once:true});
+      el.addEventListener('error',fin,{once:true});
+      setTimeout(fin,9000);
+    } else fin(); }catch(e){ fin(); }
+  });}
+  function preloadFonts(){return new Promise(function(res){
+    var done=false,fin=function(){if(done)return;done=true;bump();res();};
+    try{ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fin);setTimeout(fin,6000);} else fin(); }catch(e){ fin(); }
   });}
   var started=false;
   function startIntro(){ if(started)return;started=true;
@@ -475,18 +511,36 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
     if(intro){ intro.classList.add('up'); setTimeout(function(){ intro.remove(); },1000); }
     initReveal();
   }
-  Promise.all(imgs.map(one).concat([preloadVideo()])).then(function(){ setTimeout(startIntro,400); });
-  setTimeout(startIntro,12000);
+  Promise.all(imgs.map(one).concat([preloadMedia(video),preloadMedia(bgm),preloadFonts()])).then(function(){ setTimeout(startIntro,400); });
+  setTimeout(startIntro,20000); // safety net (total aset ~5.5MB)
   upd();
+  initLenis();
   var revInit=false;
   function initReveal(){if(revInit)return;revInit=true;var els=document.querySelectorAll('.animate');
     if(reduce||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-visible');});return;}
     var ob=new IntersectionObserver(function(en,o){en.forEach(function(t){if(t.isIntersecting){t.target.classList.add('is-visible');o.unobserve(t.target);}});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
     els.forEach(function(e){ob.observe(e);});}
-  document.getElementById('btnOpen').addEventListener('click',function(){document.body.classList.remove('not-open');document.getElementById('main').scrollIntoView({behavior:'smooth'});});
+  /* ===== Buka undangan: lepas kunci scroll, mulai Lenis, putar musik ===== */
+  var playing=false;
+  function syncMusic(){var b=document.getElementById('btnMusic');if(b)b.style.opacity=playing?'1':'.55';}
+  function playMusic(){if(!bgm)return;var pr=bgm.play();if(pr&&pr.then){pr.then(function(){playing=true;syncMusic();}).catch(function(){});}}
+  document.getElementById('btnOpen').addEventListener('click',function(){
+    document.body.classList.remove('not-open');
+    if(lenis)lenis.start();
+    goTo('#main');
+    playMusic();
+  });
   var toTop=document.getElementById('toTop');
-  window.addEventListener('scroll',function(){toTop.classList.toggle('show',(window.scrollY||0)>350);},{passive:true});
-  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});});
+  function onScroll(y){toTop.classList.toggle('show',(y||0)>350);}
+  if(lenis){lenis.on('scroll',function(e){onScroll(e.scroll);});}
+  window.addEventListener('scroll',function(){onScroll(window.scrollY);},{passive:true});
+  toTop.addEventListener('click',function(){goTo(0);});
+  document.getElementById('btnMusic').addEventListener('click',function(){
+    if(!bgm)return;
+    if(playing){bgm.pause();playing=false;syncMusic();}
+    else{var pr=bgm.play();if(pr&&pr.then){pr.then(function(){playing=true;syncMusic();}).catch(function(){});}}
+  });
+  syncMusic();
   var cd=document.getElementById('cd');
   if(cd){var tgt=new Date(cd.dataset.datetime).getTime();var p=function(n){return String(n).padStart(2,'0');};
     function tick(){var df=tgt-Date.now();if(isNaN(df)||df<0)df=0;
