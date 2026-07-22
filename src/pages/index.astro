@@ -1,665 +1,502 @@
 ---
 import '../styles/global.css';
 
-// Undangan Pernikahan — Fahrul & Ainun
-// Versi Tailwind CSS: tanpa file invitation.css & invitation.js terpisah.
-// Styling utama pakai utility Tailwind; keyframes/animasi khusus ada di blok
-// <style> di bawah; seluruh logika interaktif ada di <script> di file ini.
+// Undangan Pernikahan — Fahrul & Ainun (Tema Bugis)
+// Desain, background, warna & tata letak aset mengikuti referensi invite.digimo.id/tema-bugis.
+// Semua gaya bersifat self-contained (tidak bergantung Tailwind) via blok <style> di bawah.
+//
+// LETAKKAN ASET DI /public/images/ dengan nama file asli dari zip:
+//   Com-BUGIS-BG.webp, Bugis-Asset-1-Copy2-2048x344.webp, Bugis-Asset-1-Copy-2048x344.webp,
+//   Bugis-Asset-3.webp, logo.webp, logonama.webp, animasilogo.webm,
+//   dan foto "WhatsApp Image ..." (spasi di-encode %20).
 
 const title = "Undangan Pernikahan — Fahrul & Ainun";
-const description = "Undangan pernikahan Muhammad Fahrul Azali, S.IP & Ainun Ulfa, S.Kep., Ns — Sabtu, 08 Agustus 2026 di Pangali-ali, Kec. Banggae, Kab. Majene.";
-const image = "/images/p2.jpg";
-
-// Kelas tombol utama dipakai berulang
-const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-md bg-[#9F709A] px-5 py-2.5 text-sm text-white shadow-md transition hover:opacity-90 active:scale-95";
+const description = "Undangan pernikahan Muhammad Fahrul Azali, S.IP & Ainun Ulfa, S.Kep., Ns — Sabtu, 08 Agustus 2026 di Kab. Majene, Sulawesi Barat.";
+const ogImage = "/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp";
 ---
 
 <!DOCTYPE html>
-<html lang="id" class="notranslate" translate="no">
+<html lang="id" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <meta name="color-scheme" content="light only" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="google" content="notranslate" />
-
   <title>{title}</title>
-  <meta name="title" content={title} />
   <meta name="description" content={description} />
-
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={image} />
-
-  <link rel="icon" type="image/x-icon" href="/images/decor/flower-1.webp" />
+  <meta property="og:image" content={ogImage} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Marcellus&display=swap" />
+  <style>
+:root{
+  --bg:#241a19; --panel:rgba(20,12,12,.55); --panel-solid:#2a1e1d;
+  --maroon:#96112A; --maroon-dark:#5A0A17; --red:#D90A11;
+  --gold:#D7A916; --gold-lite:#F3CB51; --green:#3D9A62;
+  --cream:#E8D3C3; --cream-lite:#FBF0DA; --tan:#C9A46A;
+  --reveal-duration:1s; --reveal-ease:cubic-bezier(.22,.61,.36,1);
+  --pad:clamp(20px,5vw,120px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;padding:0;font-family:"Marcellus",serif;color:var(--cream);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  background:var(--bg) url('/images/Com-BUGIS-BG.webp') top center / cover fixed;
+}
+body.not-open,body.is-loading{overflow:hidden!important;height:100vh}
+img{max-width:100%;display:block}
+.font-accent{font-family:"Cormorant Garamond","Marcellus",serif;font-weight:600}
+.font-latin{font-family:"Great Vibes",cursive}
+
+#app{width:100%;max-width:1920px;margin:0 auto;position:relative;box-shadow:0 0 60px rgba(0,0,0,.6)}
+ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.section{position:relative;width:100%;overflow:hidden;padding:clamp(56px,6vw,130px) var(--pad);
+  background:rgba(18,10,10,.34);}
+.inner{max-width:clamp(432px,64vw,1180px);margin:0 auto;text-align:center}
+
+/* headings */
+.eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-lite);margin-bottom:6px}
+.h-script{font-family:"Great Vibes",cursive;color:var(--gold-lite);line-height:1.1}
+.h-accent{font-family:"Cormorant Garamond",serif;font-weight:600;color:var(--gold-lite)}
+.divider-img{width:100%;height:auto;margin:20px 0}
+.text{font-size:14.5px;line-height:1.7;color:var(--cream)}
+.muted{color:#cbb6a3}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
+  border-radius:8px;padding:11px 26px;font-size:14px;font-family:"Marcellus",serif;
+  box-shadow:0 6px 16px rgba(0,0,0,.35);transition:transform .15s ease,background .2s ease}
+.btn:active{transform:scale(.95)}
+.btn-gold{background:var(--gold);color:var(--maroon-dark);font-weight:700}
+.btn-gold:hover{background:#c39a13}
+.btn-maroon{background:var(--maroon);color:var(--cream-lite)}
+.btn-maroon:hover{background:#7a0d22}
+
+/* ================= COVER ================= */
+.cover{min-height:100vh;display:flex;justify-content:center;align-items:stretch;padding:0;
+  background:linear-gradient(rgba(11,5,5,.55),rgba(150,17,42,.72)), url('/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp');
+  background-size:cover;background-position:center;background-attachment:scroll}
+.cover .col{display:flex;flex-direction:column;justify-content:space-between;align-items:center;min-height:100vh;padding:0 var(--pad);width:100%}
+.cover .strip{width:auto;margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad))}
+.cover .strip img{width:100%;height:auto;display:block}
+.cover .strip.bottom img{transform:scaleY(-1)}
+/* Bugis border sebagai pembatas antar section (full-bleed kiri-kanan, tidak terpotong kecil) */
+.secdiv{width:100%;line-height:0;font-size:0;margin:0}
+.secdiv img{width:100%;height:auto;display:block}
+.secdiv.flip img{transform:scaleY(-1)}
+.fbleed{width:auto;margin-left:calc(-1 * var(--pad));margin-right:calc(-1 * var(--pad));margin-top:26px;margin-bottom:26px;line-height:0}
+.fbleed img{width:100%;height:auto;display:block}
+.fbleed.flip img{transform:scaleY(-1)}
+.cover .title{font-family:"Great Vibes",cursive;font-size:60px;line-height:1.05;color:var(--cream-lite);text-shadow:0 2px 14px rgba(0,0,0,.4)}
+.cover .date{font-size:14px;letter-spacing:1px;color:var(--gold-lite);margin-top:4px}
+.guest-card{margin:0 auto 14px;max-width:260px;padding:12px;border-radius:10px;
+  background:rgba(0,0,0,.28);border:1px solid rgba(243,203,81,.45)}
+.guest-card .to{font-size:14px;color:var(--cream-lite);margin-bottom:4px}
+.guest-card .name{font-weight:700;font-size:17px;color:var(--gold-lite);margin-bottom:2px}
+
+/* ornaments */
+.orn{width:84px;height:auto;margin:0 auto 12px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.house{width:150px;margin:6px auto 4px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+
+/* mempelai */
+.photo-round{width:200px;height:200px;border-radius:50%;overflow:hidden;margin:0 auto 16px;
+  border:4px solid var(--gold);box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.photo-round img{width:100%;height:100%;object-fit:cover}
+.name-big{color:var(--gold-lite);font-family:"Cormorant Garamond",serif;font-weight:700;font-size:27px;margin-bottom:4px}
+.dengan{font-family:"Great Vibes",cursive;color:var(--gold);font-size:34px;margin:6px 0}
+
+/* journey */
+.photo-rect{width:100%;max-width:320px;margin:0 auto 16px;border-radius:10px;overflow:hidden;border:4px solid var(--gold);box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.photo-rect img{width:100%;height:auto}
+
+/* date block */
+.datebox{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0}
+.datebox .side{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--tan);line-height:1.1}
+.datebox .day{padding:0 14px;border-left:2px solid var(--gold);border-right:2px solid var(--gold)}
+.datebox .day .num{font-family:"Cormorant Garamond",serif;font-size:56px;line-height:1;color:var(--gold-lite)}
+.chip{width:130px;margin:22px auto;height:auto}
+
+/* countdown */
+.countdown{display:flex;justify-content:center;gap:8px;max-width:300px;margin:0 auto 16px}
+.cd-item{flex:1;max-width:68px;border-radius:10px;padding:10px 4px;background:var(--maroon);
+  color:var(--cream-lite);border:1px solid rgba(215,169,22,.6);display:flex;flex-direction:column;align-items:center}
+.cd-item .num{font-size:22px;font-weight:700;line-height:1.1}
+.cd-item .lbl{font-size:12px}
+.map-wrap{position:relative;width:100%;padding-bottom:56%;border-radius:10px;overflow:hidden;border:4px solid var(--gold);margin:0 auto 18px}
+.map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* gallery */
+.gallery{display:flex;gap:8px}
+.gcol{flex:1;display:flex;flex-direction:column;gap:8px}
+.gitem{width:100%;overflow:hidden;border-radius:6px;border:2px solid rgba(215,169,22,.7)}
+.gitem img{width:100%;height:100%;object-fit:cover}
+.h150{height:150px}.h220{height:220px}.h280{height:280px}
+
+/* gift */
+.gift-card{margin-top:14px;padding:22px;border-radius:10px;border:1px solid var(--gold);background:rgba(0,0,0,.3);text-align:left}
+.bank-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bank-logo{width:80px;height:48px;border-radius:6px;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:Arial,sans-serif}
+.bank-num{font-weight:700;font-size:17px;color:var(--cream-lite)}
+
+/* card panel */
+.panel-quote{margin-top:8px;padding:16px 18px;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid rgba(215,169,22,.35)}
+
+/* reveal anim */
+.animate{opacity:0;transition:opacity var(--reveal-duration) ease, transform var(--reveal-duration) var(--reveal-ease);will-change:opacity,transform}
+.fadeInUp{transform:translate3d(0,24px,0)}
+.fadeInDown{transform:translate3d(0,-24px,0)}
+.fadeInLeft{transform:translate3d(-24px,0,0)}
+.fadeInRight{transform:translate3d(24px,0,0)}
+.zoomIn{transform:scale(.94)}
+.animate.is-visible{opacity:1;transform:translate3d(0,0,0) scale(1)}
+
+/* loader */
+.loader{position:fixed;inset:0;z-index:99999;display:flex;justify-content:center;align-items:center;
+  background:radial-gradient(120% 120% at 50% 0%, #3a2422 0%, #1c1312 100%);transition:opacity .6s ease,visibility .6s ease}
+.loader.loaded{opacity:0;visibility:hidden;pointer-events:none}
+.loader .box{width:82%;max-width:320px;text-align:center}
+.loader .lt{font-family:"Great Vibes",cursive;font-size:44px;color:var(--gold-lite);margin-bottom:12px}
+.ring{width:46px;height:46px;margin:0 auto 14px;border-radius:50%;border:3px solid rgba(215,169,22,.3);border-top-color:var(--gold-lite);animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bar{width:100%;max-width:220px;height:4px;margin:14px auto 0;background:rgba(215,169,22,.2);border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .25s ease}
+
+/* fabs */
+.fabs{position:fixed;bottom:24px;right:20px;z-index:999;display:flex;flex-direction:column;align-items:end;gap:10px}
+.fab{width:46px;height:46px;border-radius:50%;background:var(--maroon);color:var(--cream-lite);border:1px solid rgba(215,169,22,.5);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.4);cursor:pointer}
+.to-top{position:fixed;bottom:24px;left:20px;z-index:999;opacity:0;visibility:hidden;transform:translateY(16px) scale(.9);transition:.35s var(--reveal-ease)}
+.to-top.show{opacity:1;visibility:visible;transform:none}
+
+/* ===== intro video (tampil setelah preload) + cover top ===== */
+.intro{position:fixed;inset:0;z-index:99997;background:#0b0505;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:transform .9s var(--reveal-ease),opacity .5s ease,visibility .5s ease}
+.intro.show{opacity:1;visibility:visible}
+.intro.up{transform:translateY(-100%)}
+.intro video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.cover .col{padding-top:0}
+.cover-top{width:100%}
+.logonama{width:74%;max-width:290px;height:auto;margin:16px auto 0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.55))}
+.open-wrap{text-align:center;width:100%}
+
+/* ===== Responsive 360px -> 1920px: full-bleed & konten membesar proporsional ===== */
+.eyebrow{font-size:clamp(13px,1vw,22px)}
+.text{font-size:clamp(14.5px,1.1vw,25px)!important;line-height:1.7}
+.h-accent{font-size:clamp(28px,3vw,62px)!important}
+.section .title{font-size:clamp(52px,6vw,120px)!important}
+.name-big{font-size:clamp(25px,2.6vw,54px)!important}
+.dengan{font-size:clamp(34px,3.4vw,72px)}
+.cover .title{font-size:clamp(52px,7vw,150px)}
+.cover .date{font-size:clamp(14px,1.2vw,28px)}
+.guest-card{max-width:clamp(260px,32vw,540px)}
+.guest-card .to{font-size:clamp(14px,1vw,22px)}
+.guest-card .name{font-size:clamp(17px,1.4vw,30px)}
+.btn{font-size:clamp(14px,1.05vw,24px);padding:clamp(11px,1vw,22px) clamp(26px,2.4vw,58px)}
+.logonama{max-width:clamp(290px,32vw,660px)}
+.photo-round{width:clamp(200px,22vw,440px)!important;height:clamp(200px,22vw,440px)!important}
+.photo-rect{max-width:clamp(320px,42vw,780px)}
+.datebox .day .num{font-size:clamp(56px,6vw,120px)}
+.datebox .side{font-size:clamp(20px,2vw,40px)}
+.countdown{max-width:clamp(300px,42vw,760px)}
+.cd-item{max-width:none}
+.cd-item .num{font-size:clamp(22px,2.2vw,48px)}
+.cd-item .lbl{font-size:clamp(12px,1vw,22px)}
+.bank-num{font-size:clamp(17px,1.4vw,30px)}
+.gift-card{max-width:clamp(280px,64vw,780px);margin-left:auto;margin-right:auto}
+.map-wrap{max-width:clamp(280px,64vw,900px);margin-left:auto;margin-right:auto}
+.gallery{max-width:clamp(280px,66vw,1040px);margin:0 auto}
+.h150{height:clamp(150px,16vw,300px)}
+.h220{height:clamp(220px,23vw,440px)}
+.h280{height:clamp(280px,30vw,560px)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .animate{opacity:1!important;transform:none!important;transition:none!important}
+  .ring{animation:none!important}
+}
+@media (max-width:420px){
+  .cover .title{font-size:52px}
+  .photo-round{width:170px;height:170px}
+}
+</style>
 </head>
+<body class="not-open is-loading">
 
-<body class="text-[#604024]">
-  <main id="app">
-    <!-- Overlay untuk modal -->
-    <div id="modalOverlay" class="hidden fixed inset-0 z-[1000] bg-black/50"></div>
 
-    <!-- Loader / Preloader (Landing) -->
-    <div id="loader" class="loader-wrapper">
-      <div class="loader-box w-[82%] max-w-[320px] text-center text-[#604024]">
-        <div class="loader-title font-latin text-[40px] leading-tight text-[#9F709A] mb-[18px]">Fahrul &amp; Ainun</div>
-        <div class="loader-ring w-[46px] h-[46px] mx-auto mb-3.5 rounded-full border-[3px] border-[#9F709A]/25 border-t-[#9F709A]"></div>
-        <div class="text-[15px] tracking-wide text-[#604024]"><span id="loaderPercent">0</span>%</div>
-        <div class="mt-1.5 text-xs tracking-wide opacity-70">Menyiapkan undangan…</div>
-        <div class="w-full max-w-[220px] h-1 mx-auto mt-4 bg-[#747254]/20 rounded-full overflow-hidden">
-          <span id="loaderBar" class="loader-bar-fill block h-full w-0 bg-[#9F709A] rounded-full"></span>
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="box">
+    <div class="lt">Fahrul &amp; Ainun</div>
+    <div class="ring"></div>
+    <div style="font-size:15px;letter-spacing:1px"><span id="pct">0</span>%</div>
+    <div style="font-size:12px;opacity:.7;margin-top:6px">Menyiapkan undangan…</div>
+    <div class="bar"><span id="bar"></span></div>
+  </div>
+</div>
+
+<!-- Intro Video: tampil setelah preload untuk merender & meng-cache semua aset -->
+<div class="intro" id="intro">
+  <video id="introVideo" muted playsinline preload="auto" poster="/images/logo.webp">
+    <source src="/images/animasilogo.webm" type="video/webm" />
+  </video>
+</div>
+
+<main id="app">
+<ul class="sections">
+
+  <!-- 1. COVER -->
+  <li class="cover">
+    <div class="col">
+      <div class="cover-top">
+        <div class="strip top animate fadeInDown"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
+        <img class="logonama animate zoomIn" src="/images/logonama.webp" alt="Fahrul &amp; Ainun" />
+      </div>
+      <div>
+        <div class="eyebrow animate fadeInDown">The Wedding Of</div>
+        <div class="title animate zoomIn">Fahrul &amp; Ainun</div>
+        <div class="date animate fadeInUp">Sabtu, 08 Agustus 2026</div>
+      </div>
+      <div style="width:100%">
+        <div class="guest-card animate fadeInUp">
+          <div class="to">Kepada Yth.<br />Bapak/Ibu/Saudara/i</div>
+          <div class="name">Tamu Undangan</div>
+          <div style="font-size:14px;color:var(--cream-lite)">di Tempat</div>
+        </div>
+        <div class="open-wrap"><button class="btn btn-gold animate fadeInUp" id="btnOpen">Buka Undangan</button></div>
+        <div class="strip bottom animate fadeInUp" style="margin-top:20px"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="ornamen" /></div>
+      </div>
+    </div>
+  </li>
+
+  <!-- 2. PEMBUKA & AYAT -->
+  <li class="section" id="main">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/logo.webp" alt="logo" style="width:120px" />
+      <div class="h-accent animate fadeInDown" style="font-size:30px;margin-bottom:14px">We&rsquo;re Getting Married</div>
+      <div class="text animate fadeInDown" style="margin-bottom:8px">Assalamualaikum Warahmatullahi Wabarakatuh</div>
+      <div class="text animate fadeInDown" style="margin-bottom:22px">Dengan memohon rahmat dan ridho Allah SWT yang telah menciptakan makhluk-Nya secara berpasang-pasangan, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</div>
+      <div class="name-big animate fadeInLeft" style="font-size:25px">Muhammad Fahrul Azali, S.IP</div>
+      <div class="dengan animate zoomIn">&amp;</div>
+      <div class="name-big animate fadeInRight" style="font-size:25px">Ainun Ulfa, S.Kep., Ns</div>
+      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></div>
+      <div class="text animate fadeInUp" style="font-style:italic">&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang.&rdquo;</div>
+      <div class="text animate fadeInUp" style="margin-top:8px;color:var(--gold-lite)">(QS. Ar-Rum : 21)</div>
+    </div>
+  </li>
+
+  <li class="secdiv animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></li>
+
+  <!-- 3. MEMPELAI -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/Bugis-Asset-3.webp" alt="ornamen" style="width:78px" />
+      <div class="photo-round animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.05.webp" alt="Mempelai Pria" /></div>
+      <div class="name-big animate fadeInLeft">Muhammad Fahrul Azali, S.IP</div>
+      <div class="text animate fadeInUp" style="margin-bottom:22px">Putra ke-dua dari<br />Bapak Azali Mudjahid Pawelloi, S.E &amp;<br />Ibu Nursaida Said</div>
+      <div class="dengan animate zoomIn">dengan</div>
+      <div class="photo-round animate zoomIn" style="margin-top:16px"><img src="/images/ulfa.webp" alt="Mempelai Wanita" /></div>
+      <div class="name-big animate fadeInRight">Ainun Ulfa, S.Kep., Ns</div>
+      <div class="text animate fadeInUp">Putri pertama dari<br />Bapak Sirajuddin, S.Ag &amp;<br />Ibu Maryam, S.Ag</div>
+    </div>
+  </li>
+
+  <li class="secdiv flip animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></li>
+
+  <!-- 4. OUR JOURNEY -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/logo.webp" alt="logo" style="width:120px" />
+      <div class="h-accent animate fadeInDown" style="font-size:30px;margin-bottom:14px">Our Journey</div>
+      <div class="photo-rect animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2012.58.13.webp" alt="Our Journey" /></div>
+      <div class="text animate fadeInUp" style="font-style:italic">Dari sebuah pertemuan yang sederhana, tumbuh niat tulus untuk menyatukan dua hati dalam ikatan yang diridhoi Allah SWT.</div>
+    </div>
+  </li>
+
+  <li class="secdiv animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></li>
+
+  <!-- 5. AKAD & RESEPSI -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/Bugis-Asset-3.webp" alt="ornamen" style="width:78px" />
+      <div class="h-accent animate fadeInDown" style="font-size:36px;margin-bottom:4px">Akad Nikah</div>
+      <div class="text animate fadeInDown" style="margin-bottom:8px">Sabtu,</div>
+      <div class="datebox animate zoomIn">
+        <div class="side">Agustus</div>
+        <div class="day"><div class="num">08</div></div>
+        <div class="side">2026</div>
+      </div>
+      <div class="text animate fadeInUp">Pukul 10.30 WITA - Selesai</div>
+      <div class="text animate fadeInUp">Bertempat di Kediaman Mempelai Wanita</div>
+      <div class="fbleed animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></div>
+      <div class="h-accent animate fadeInDown" style="font-size:36px;margin-bottom:4px">Resepsi</div>
+      <div class="text animate fadeInDown" style="margin-bottom:8px">Sabtu,</div>
+      <div class="datebox animate zoomIn">
+        <div class="side">Agustus</div>
+        <div class="day"><div class="num">08</div></div>
+        <div class="side">2026</div>
+      </div>
+      <div class="text animate fadeInUp">Pukul 13.00 WITA - Selesai</div>
+      <div class="text animate fadeInUp">Bertempat di Kediaman Mempelai Pria</div>
+    </div>
+  </li>
+
+  <li class="secdiv flip animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></li>
+
+  <!-- 6. COUNTDOWN + MAPS -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/logo.webp" alt="logo" style="width:120px" />
+      <div class="h-accent animate fadeInDown" style="font-size:32px;margin-bottom:20px">Menghitung Hari</div>
+      <div class="countdown animate fadeInUp" id="cd" data-datetime="2026-08-08T10:30">
+        <div class="cd-item"><div class="num" id="d">00</div><div class="lbl">Hari</div></div>
+        <div class="cd-item"><div class="num" id="h">00</div><div class="lbl">Jam</div></div>
+        <div class="cd-item"><div class="num" id="m">00</div><div class="lbl">Menit</div></div>
+        <div class="cd-item"><div class="num" id="s">00</div><div class="lbl">Detik</div></div>
+      </div>
+      <a class="btn btn-maroon animate fadeInUp" style="margin:0 auto 34px;max-width:230px" href="#" >Tambahkan ke Kalender</a>
+      <div class="h-accent animate fadeInDown" style="font-size:32px;margin-bottom:18px">Lokasi Acara</div>
+      <div class="map-wrap animate zoomIn"><iframe title="Lokasi Acara Pernikahan Fahrul &amp; Ainun" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1991.1050960627044!2d118.99214153072066!3d-3.538905928279302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d94bf0c0450c3e5%3A0x619d181cc85d379c!2sFX6V%2BC72%2C%20Baurung%2C%20Kec.%20Banggae%20Tim.%2C%20Kabupaten%20Majene%2C%20Sulawesi%20Barat%2091412!5e0!3m2!1sid!2sid!4v1784711004114!5m2!1sid!2sid"></iframe></div>
+      <div class="text animate fadeInUp" style="margin-bottom:14px">Kediaman Mempelai, Baurung,<br />Kec. Banggae Timur, Kab. Majene, Sulawesi Barat</div>
+    <a href="https://maps.app.goo.gl/u63dUAmLEaczRiEa9" target="_blank" rel="noreferrer noopener"  class="btn btn-gold animate fadeInUp" style="margin:0 auto;max-width:230px">
+  Buka Google Maps
+</a>
+    </div>
+  </li>
+
+  <li class="secdiv animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></li>
+
+  <!-- 7. GALLERY -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/logo.webp" alt="ornamen" style="width:78px" />
+      <div class="h-accent animate fadeInDown" style="font-size:32px;margin-bottom:20px">Our Gallery</div>
+      <div class="gallery">
+        <div class="gcol">
+          <div class="gitem h150 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp" alt="g1" /></div>
+          <div class="gitem h280 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.15.webp" alt="g2" /></div>
+          <div class="gitem h220 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.04.webp" alt="g3" /></div>
+        </div>
+        <div class="gcol">
+          <div class="gitem h280 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.05.webp" alt="g4" /></div>
+          <div class="gitem h150 animate zoomIn"><img src="/images/wa.webp" alt="g5" /></div>
+          <div class="gitem h220 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2012.58.13%20(1).webp" alt="g6" /></div>
         </div>
       </div>
     </div>
+  </li>
 
-    <!-- Music Player -->
-    <audio id="music" loop>
-      <source src="https://assets.satumomen.com/musics/elliot-james-reay-i-think-they-call-this-love-lyrics-ql9vwz3kfqg.mp3" type="audio/mpeg" />
-    </audio>
+  <li class="secdiv flip animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></li>
 
-    <div id="satuMomen" data-guest="Nama Tamu" data-group="VIP">
-      <div class="w-full">
-        <ul class="list-none p-0 m-0 flex flex-col">
-
-          <!-- Section 1: Cover -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat" style="background-image:linear-gradient(rgba(96,64,36,0.45),rgba(96,64,36,0.6)),url('/images/p2.jpg');">
-            <div class="max-w-[480px] w-full mx-auto h-full">
-              <div class="pt-6 h-full w-full flex flex-col justify-center items-center pb-20 min-h-screen">
-                <div class="mt-6 mb-auto text-center animate__animated animate__fadeInDown">
-                  <div class="text-[14.4px] text-white">The Wedding Of</div>
-                  <div class="font-latin text-[50px] leading-tight text-white">Fahrul &amp; Ainun</div>
-                </div>
-                <div class="w-full text-center mx-auto">
-                  <div class="mx-auto w-full text-center mb-3 p-2 rounded-lg max-w-[240px] bg-white/40 animate__animated animate__zoomIn">
-                    <div class="mb-1 text-[14px] text-white animate__animated animate__fadeInUp">Kepada Yth.<br />Bapak/Ibu/Saudara/i</div>
-                    <div id="guestNameSlot" class="font-bold text-[16px] text-white mb-1 animate__animated animate__fadeInUp">Tamu Undangan</div>
-                    <div id="groupNameSlot" class="text-[14.4px] text-white animate__animated animate__fadeInUp">di Tempat</div>
-                  </div>
-                  <button id="btnOpenInvitation" class={`${btnPrimary} animate__animated animate__fadeInUp`}>Open Invitation</button>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 2: Pembuka & Ayat -->
-          <li id="mainContent" class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6">
-              <div class="w-full flex flex-col justify-center items-center">
-                <div class="mb-2 text-center text-[14.4px] animate__animated animate__fadeInDown">Assalamualaikum Warahmatullahi Wabarakatuh</div>
-                <div class="text-center mb-6 text-[14.4px] animate__animated animate__fadeInDown">
-                  Maha Suci Allah SWT yang telah menciptakan hamba-Nya berpasang-pasangan.<br />Ya Allah, dengan memohon Rahmat dan Ridho-Mu, perkenankanlah kami menikahkan Putra-Putri kami:
-                </div>
-                <div class="text-center">
-                  <div class="text-[#9F709A] text-[20px] font-accent animate__animated animate__fadeInLeft">Muhammad Fahrul Azali, S.IP</div>
-                  <div class="text-[#9F709A] text-[24px] font-latin animate__animated animate__zoomIn">&amp;</div>
-                  <div class="text-[#9F709A] text-[20px] font-accent animate__animated animate__fadeInRight">Ainun Ulfa, S.Kep., Ns</div>
-                </div>
-
-                <div class="wave-left my-3 mx-auto w-[20%] animate__animated animate__zoomIn">
-                  <img src="/images/decor/flower-1.webp" alt="flower" class="w-full h-auto pointer-events-none" loading="lazy" decoding="async" />
-                </div>
-
-                <div class="text-center animate__animated animate__fadeInUp">
-                  <div class="mb-3 text-[14.4px] italic">
-                    Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.
-                  </div>
-                  <div class="text-[14.4px]">(Ar-Rum : 21)</div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 3: Mempelai -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6 relative">
-              <img src="/images/decor/flower-motif.webp" class="pointer-events-none absolute inset-0 w-full" alt="flower motif" loading="lazy" decoding="async" />
-              <div class="w-full flex flex-col justify-center items-center relative">
-                <div class="relative mb-6 mx-auto w-[70%] animate__animated animate__zoomIn">
-                  <div class="absolute w-1/2 left-[-27%] top-[-12%] wave-left">
-                    <img src="/images/decor/flower-2.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                  </div>
-                  <div class="absolute w-1/2 right-[-27%] bottom-[-3%] wave-right">
-                    <img src="/images/decor/flower-3.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                  </div>
-                  <div class="w-full relative overflow-hidden rounded-lg h-[220px] border-4 border-[#747254]">
-                    <img src="/images/p3.jpg" alt="Fahrul & Ainun" class="w-full h-full object-cover" loading="lazy" decoding="async" />
-                  </div>
-                </div>
-                <div class="text-center mb-6 relative">
-                  <div class="text-[#9F709A] text-[20px] font-accent mb-2 animate__animated animate__fadeInLeft">Muhammad Fahrul Azali, S.IP</div>
-                  <div class="text-[14.4px] animate__animated animate__zoomIn">Putra ke-dua dari<br />Bapak Azali Mudjahid Pawelloi, S.E &amp;<br />Ibu Nursaida Said</div>
-                </div>
-                <div class="text-center relative">
-                  <div class="text-[#9F709A] text-[20px] font-accent mb-2 animate__animated animate__fadeInRight">Ainun Ulfa, S.Kep., Ns</div>
-                  <div class="text-[14.4px] animate__animated animate__zoomIn">Putri pertama dari<br />Bapak Sirajuddin, S.Ag &amp;<br />Ibu Maryam, S.Ag</div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 4: Akad Nikah & Duduk Bersila -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6 relative">
-              <div class="relative w-full flex flex-col justify-center items-center">
-                <div class="absolute w-[35%] left-[-20%] top-[-3%] wave-left">
-                  <img src="/images/decor/flower-6.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="absolute w-[35%] right-[-20%] bottom-[-3%] -scale-x-100 wave-left">
-                  <img src="/images/decor/flower-6.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="text-center">
-                  <div class="text-[16px] mb-3 animate__animated animate__fadeInDown">Sabtu, 08 Agustus 2026</div>
-                  <div>
-                    <div class="text-[#9F709A] text-[34px] font-accent animate__animated animate__fadeInLeft">Akad Nikah</div>
-                    <div class="text-[14.4px] animate__animated animate__fadeInDown">Pukul 10.30 WITA - Selesai</div>
-                    <div class="text-[14.4px] animate__animated animate__fadeInDown">di Kediaman Mempelai Wanita</div>
-                  </div>
-                  <div class="my-3 mx-auto w-[30%] animate__animated animate__zoomIn">
-                    <img src="/images/decor/flower-4.webp" alt="flower" class="w-full h-auto pointer-events-none" loading="lazy" decoding="async" />
-                  </div>
-                  <div>
-                    <div class="text-[#9F709A] text-[34px] font-accent animate__animated animate__fadeInRight">Duduk Bersila</div>
-                    <div class="text-[14.4px] animate__animated animate__fadeInUp">Pukul 13.00 WITA - Selesai</div>
-                    <div class="text-[14.4px] animate__animated animate__fadeInUp">di Kediaman Mempelai Pria</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 5: Waktu Acara (Countdown) & Lokasi Acara (Maps) -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6 relative">
-              <div class="relative w-full flex flex-col justify-center items-center pb-[160px]">
-                <div class="absolute w-[35%] left-[-20%] top-[-3%] wave-left">
-                  <img src="/images/decor/flower-6.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="absolute w-[35%] right-[-20%] bottom-[20%] -scale-x-100 wave-right">
-                  <img src="/images/decor/flower-6.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="absolute left-[-30px] right-[-30px] bottom-[-30px] w-[calc(100%+60px)] animate__animated animate__fadeInUp">
-                  <img src="/images/decor/flower-bm.webp" alt="motif" class="w-full h-auto pointer-events-none" loading="lazy" decoding="async" />
-                </div>
-                <div class="w-full relative">
-                  <div class="mb-6 text-center text-[#747254] text-[32px] font-accent animate__animated animate__fadeInLeft">Waktu Acara</div>
-                  <div class="countdown-wrapper mx-auto mb-3 w-full max-w-[280px] animate__animated animate__fadeInUp" data-datetime="2026-08-08T10:30">
-                    <div class="countdown flex justify-center items-stretch gap-2 text-center">
-                      <div class="countdown-item day flex-1 max-w-[64px] rounded-lg py-2 px-1 bg-[#9F709A] text-white flex flex-col items-center justify-center">
-                        <div class="number text-[22px] font-bold leading-tight">00</div>
-                        <div class="text text-xs">Hari</div>
-                      </div>
-                      <div class="countdown-item hour flex-1 max-w-[64px] rounded-lg py-2 px-1 bg-[#9F709A] text-white flex flex-col items-center justify-center">
-                        <div class="number text-[22px] font-bold leading-tight">00</div>
-                        <div class="text text-xs">Jam</div>
-                      </div>
-                      <div class="countdown-item minute flex-1 max-w-[64px] rounded-lg py-2 px-1 bg-[#9F709A] text-white flex flex-col items-center justify-center">
-                        <div class="number text-[22px] font-bold leading-tight">00</div>
-                        <div class="text text-xs">Menit</div>
-                      </div>
-                      <div class="countdown-item second flex-1 max-w-[64px] rounded-lg py-2 px-1 bg-[#9F709A] text-white flex flex-col items-center justify-center">
-                        <div class="number text-[22px] font-bold leading-tight">00</div>
-                        <div class="text text-xs">Detik</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-center mb-12">
-                    <a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Pernikahan%20Fahrul%20%26%20Ainun&amp;dates=20260808T023000Z%2F20260808T060000Z&amp;details=&amp;location=Jl.%20Ammana%20Wewang%20No.%2014%20Pangali-ali%2C%20Kec.%20Banggae%2C%20Kab.%20Majene" class={`${btnPrimary} mx-auto max-w-[200px] animate__animated animate__fadeInUp`} target="_blank" rel="noreferrer noopener">Tambahkan ke Kalender</a>
-                  </div>
-                  <div>
-                    <div class="mb-6 text-center text-[#747254] text-[32px] font-accent animate__animated animate__fadeInLeft">Lokasi Acara</div>
-                    <div class="relative w-full mx-auto mb-5 overflow-hidden rounded-[10px] border-4 border-[#9F709A] pb-[53%] animate__animated animate__zoomIn">
-                      <iframe title="Lokasi Acara Pernikahan Fahrul & Ainun" class="absolute inset-0 w-full h-full border-0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1991.1050960627044!2d118.99214153072066!3d-3.538905928279302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d94bf0c0450c3e5%3A0x619d181cc85d379c!2sFX6V%2BC72%2C%20Baurung%2C%20Kec.%20Banggae%20Tim.%2C%20Kabupaten%20Majene%2C%20Sulawesi%20Barat%2091412!5e0!3m2!1sid!2sid!4v1784711004114!5m2!1sid!2sid"></iframe>
-                    </div>
-                    <div class="text-center animate__animated animate__fadeInUp">
-                      <div class="mb-3 text-[14px]">Jl. Ammana Wewang No. 14 Pangali-ali,<br />Kec. Banggae, Kab. Majene, Sulawesi Barat</div>
-                      <a href="https://maps.app.goo.gl/u63dUAmLEaczRiEa9" class={`${btnPrimary} mx-auto max-w-[200px] animate__animated animate__fadeInUp`} target="_blank" rel="noreferrer noopener">Buka Google Maps</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 6: Galeri -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6">
-              <div class="w-full">
-                <div class="text-center mb-6 text-[#9F709A] animate__animated animate__fadeInDown">
-                  <div class="text-[32px] font-accent">Galeri</div>
-                </div>
-                <div class="flex gap-2">
-                  <div class="flex-1 flex flex-col gap-2">
-                    <div class="overflow-hidden w-full h-[150px] animate__animated animate__zoomIn"><img src="/images/p1.jpg" class="w-full h-full object-cover" alt="gallery-1" loading="lazy" decoding="async" /></div>
-                    <div class="overflow-hidden w-full h-[280px] animate__animated animate__zoomIn"><img src="/images/p2.jpg" class="w-full h-full object-cover" alt="gallery-2" loading="lazy" decoding="async" /></div>
-                    <div class="overflow-hidden w-full h-[220px] animate__animated animate__zoomIn"><img src="/images/p3.jpg" class="w-full h-full object-cover" alt="gallery-3" loading="lazy" decoding="async" /></div>
-                  </div>
-                  <div class="flex-1 flex flex-col gap-2">
-                    <div class="overflow-hidden w-full h-[280px] animate__animated animate__zoomIn"><img src="/images/p3.jpg" class="w-full h-full object-cover" alt="gallery-4" loading="lazy" decoding="async" /></div>
-                    <div class="overflow-hidden w-full h-[150px] animate__animated animate__zoomIn"><img src="/images/p1.jpg" class="w-full h-full object-cover" alt="gallery-5" loading="lazy" decoding="async" /></div>
-                    <div class="overflow-hidden w-full h-[220px] animate__animated animate__zoomIn"><img src="/images/p2.jpg" class="w-full h-full object-cover" alt="gallery-6" loading="lazy" decoding="async" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 7: RSVP -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6">
-              <div class="w-full">
-                <div class="animate__animated animate__fadeInRight">
-                  <div class="w-[248px] h-[195px] mx-auto overflow-hidden border-4 border-[#747254]" style="transform:translate(15px,24px) rotate(356deg);">
-                    <img src="/images/p1.jpg" class="w-full h-full object-cover" alt="Fahrul & Ainun" loading="lazy" decoding="async" />
-                  </div>
-                </div>
-                <div class="animate__animated animate__fadeInLeft">
-                  <div class="w-[248px] h-[195px] mx-auto overflow-hidden mb-5 border-4 border-[#747254]" style="transform:translate(-7px,0px) rotate(2deg);">
-                    <img src="/images/p3.jpg" class="w-full h-full object-cover" alt="Fahrul & Ainun" loading="lazy" decoding="async" />
-                  </div>
-                </div>
-                <div class="text-center">
-                  <div class="mb-6 text-[14.4px] animate__animated animate__fadeInUp">Kirim ucapan untuk mempelai<br />dan konfirmasi kehadiran</div>
-                  <button id="btnOpenRsvpModal" class={`${btnPrimary} mb-6 animate__animated animate__fadeInUp`}>Kirim Ucapan RSVP</button>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 8: Gift / Hadiah -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6">
-              <div class="w-full text-center">
-                <div class="mx-auto w-[30%] animate__animated animate__zoomIn">
-                  <img src="/images/decor/gift-icon.webp" alt="gift" class="w-full h-auto" loading="lazy" decoding="async" />
-                </div>
-                <div class="mb-6 text-[14.4px] animate__animated animate__fadeInDown">Terima kasih telah menambah semangat kegembiraan pernikahan kami dengan kehadiran dan hadiah indah Anda.</div>
-                <div class="mt-3 p-6 rounded border border-[#747254] bg-white/60">
-                  <div class="animate__animated animate__zoomIn">
-                    <div class="mx-auto max-w-[280px]">
-                      <div class="flex items-center mb-3">
-                        <div class="w-[80px] h-[50px] overflow-hidden bg-white rounded">
-                          <img src="/images/bank/bca.webp" class="w-full h-full object-contain" alt="BCA" loading="lazy" decoding="async" />
-                        </div>
-                        <div class="text-left pl-2">
-                          <div class="font-bold text-lg mb-0">1234567890</div>
-                          <div class="text-[14.4px]">BCA : a.n. Muhammad Fahrul Azali</div>
-                        </div>
-                      </div>
-                      <div class="flex items-center">
-                        <div class="w-[80px] h-[50px] overflow-hidden bg-white rounded">
-                          <img src="/images/bank/bni.webp" class="w-full h-full object-contain" alt="BNI" loading="lazy" decoding="async" />
-                        </div>
-                        <div class="text-left pl-2">
-                          <div class="font-bold text-lg mb-0">1234567890</div>
-                          <div class="text-[14.4px]">BNI : a.n. Ainun Ulfa</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mt-3 p-6 rounded border border-[#747254] bg-white/60">
-                  <div class="text-center mb-2 animate__animated animate__zoomIn">
-                    <div class="font-bold text-lg text-[#9F709A] mb-2 font-accent">Kirim Hadiah</div>
-                    <div class="mb-0">Anda dapat mengirim kado ke:<br />Jl. Ammana Wewang No. 14 Pangali-ali, Kec. Banggae, Kab. Majene</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- Section 9: Penutup -->
-          <li class="relative w-full overflow-hidden flex justify-center items-center py-14 bg-[url('/images/bg2.webp')] bg-cover bg-center bg-no-repeat">
-            <div class="max-w-[480px] w-full mx-auto px-6">
-              <div class="relative flex flex-col justify-center w-full">
-                <div class="absolute w-[35%] left-[-14%] bottom-[40%] wave-left">
-                  <img src="/images/decor/flower-5.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="absolute w-[35%] right-[-14%] bottom-[40%] -scale-x-100 wave-left">
-                  <img src="/images/decor/flower-5.webp" alt="flower" class="w-full h-auto pointer-events-none origin-bottom" loading="lazy" decoding="async" />
-                </div>
-                <div class="absolute left-[-30px] right-[-30px] bottom-[-30px] w-[calc(100%+60px)] animate__animated animate__fadeInUp">
-                  <img src="/images/decor/building-motif.webp" alt="motif" class="w-full h-auto pointer-events-none" loading="lazy" decoding="async" />
-                </div>
-                <div class="relative">
-                  <div class="w-full text-center">
-                    <div class="mb-2 text-[14.4px] animate__animated animate__fadeInDown">Merupakan suatu kehormatan dan<br />kebahagiaan bagi kami apabila<br />Bapak/Ibu/Saudara/i berkenan hadir<br />untuk memberikan do’a restu.</div>
-                    <div class="mb-6 text-[14.4px] animate__animated animate__fadeInDown">Atas kehadiran dan do’a restunya<br />kami ucapkan terima kasih.</div>
-                    <div class="mb-2 animate__animated animate__fadeInDown">Kami yang berbahagia<br /></div>
-                    <div class="text-center">
-                      <div class="text-[#9F709A] text-[32px] font-accent animate__animated animate__fadeInLeft">Fahrul</div>
-                      <div class="text-[#9F709A] text-[24px] font-latin animate__animated animate__zoomIn">&amp;</div>
-                      <div class="text-[#9F709A] text-[32px] font-accent animate__animated animate__fadeInRight">Ainun</div>
-                    </div>
-                    <div class="mt-3 text-[13px] animate__animated animate__fadeInUp">Kel. Bapak Azali Mudjahid Pawelloi, S.E<br />&amp; Ibu Nursaida Said</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-        </ul>
-      </div>
-    </div>
-
-    <!-- Floating Action Buttons -->
-    <div class="fixed bottom-6 right-5 z-[999] flex flex-col items-end">
-      <button id="btnQrModal" class="w-[46px] h-[46px] rounded-full bg-[#9F709A] text-white flex items-center justify-center shadow-lg mt-2.5">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-          <rect x="40" y="40" width="80" height="80" rx="16"></rect>
-          <rect x="40" y="136" width="80" height="80" rx="16"></rect>
-          <rect x="136" y="40" width="80" height="80" rx="16"></rect>
-        </svg>
-      </button>
-      <button id="btnMusic" class="w-[46px] h-[46px] rounded-full bg-[#9F709A] text-white flex items-center justify-center shadow-lg mt-2.5">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-          <path d="M184,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,224,80ZM53.92,34.62A8,8,0,1,0,42.08,45.38L73.55,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V175.09l42.08,46.29a8,8,0,1,0,11.84-10.76Zm92.16,77.59A8,8,0,0,0,160,106.83V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0-1,11.7Z"></path>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Tombol Kembali ke Atas -->
-    <button id="btnBackToTop" class="btn-to-top fixed bottom-6 left-5 z-[999] w-[46px] h-[46px] rounded-full bg-[#9F709A] text-white flex items-center justify-center shadow-lg" aria-label="Kembali ke atas">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-      </svg>
-    </button>
-
-    <!-- Modal QR Code -->
-    <div id="qrModal" class="hidden fixed inset-0 z-[1001] items-center justify-center p-4">
-      <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-xl">
-        <h5 class="font-semibold">Kode QR Tamu</h5>
-        <div class="my-3 mx-auto w-[180px] h-[180px] bg-white p-2.5 rounded-lg border border-gray-300">
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160" height="160" viewBox="0 0 180 180">
-            <rect x="0" y="0" width="180" height="180" fill="#ffffff"/>
-            <g transform="scale(8.571)">
-              <path d="M0 0L0 7L7 7L7 0ZM1 1L1 6L6 6L6 1ZM2 2L2 5L5 5L5 2ZM14 0L14 7L21 7L21 0ZM15 1L15 6L20 6L20 1ZM16 2L16 5L19 5L19 2ZM0 14L0 21L7 21L7 14ZM1 15L1 20L6 20L6 15ZM2 16L2 19L5 19L5 16Z" fill="#000000"/>
-            </g>
-          </svg>
+  <!-- 8. WEDDING GIFT -->
+  <li class="section">
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/logo.webp" alt="logo" style="width:120px" />
+      <div class="h-accent animate fadeInDown" style="font-size:32px;margin-bottom:4px">Wedding Gift</div>
+      <div class="text animate fadeInDown" style="margin-bottom:18px">Doa restu Anda merupakan karunia yang sangat berarti. Namun jika memberi adalah tanda kasih, Anda dapat mengirim hadiah melalui:</div>
+      <div class="gift-card animate zoomIn">
+        <div class="bank-row">
+          <div class="bank-logo">BCA</div>
+          <div><div class="bank-num">1234567890</div><div class="text" style="color:var(--cream)">a.n. Muhammad Fahrul Azali</div></div>
         </div>
-        <div>Nama Tamu</div>
-        <button id="closeQrModalBtn" type="button" class="mt-3 rounded-md bg-gray-200 px-4 py-1.5 text-sm text-[#604024]">Tutup</button>
+        <div class="bank-row" style="margin-bottom:0">
+          <div class="bank-logo">BNI</div>
+          <div><div class="bank-num">1234567890</div><div class="text" style="color:var(--cream)">a.n. Ainun Ulfa</div></div>
+        </div>
+      </div>
+      <div class="gift-card animate zoomIn" style="text-align:center">
+        <div class="h-accent" style="font-size:20px;margin-bottom:6px">Kirim Hadiah</div>
+        <div class="text">Anda dapat mengirim kado ke:<br />Kediaman Mempelai, Baurung, Kec. Banggae Timur, Kab. Majene</div>
       </div>
     </div>
+  </li>
 
-    <!-- Modal RSVP -->
-    <div id="rsvpModal" class="hidden fixed inset-0 z-[1001] items-center justify-center p-4">
-      <div class="w-full max-w-sm rounded-xl bg-white p-6">
-        <h5 class="text-center mb-3 font-accent text-lg">Konfirmasi Kehadiran</h5>
-        <form id="rsvpForm">
-          <div class="mb-2">
-            <input type="text" class="w-full rounded-md border border-[#747254]/40 px-3 py-2 text-[#604024] focus:outline-none focus:ring-2 focus:ring-[#9F709A]" placeholder="Nama Anda" required />
-          </div>
-          <div class="mb-2">
-            <select class="w-full rounded-md border border-[#747254]/40 px-3 py-2 text-[#604024] focus:outline-none focus:ring-2 focus:ring-[#9F709A]">
-              <option value="Hadir">Hadir</option>
-              <option value="Tidak Hadir">Tidak Hadir</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <textarea rows="3" class="w-full rounded-md border border-[#747254]/40 px-3 py-2 text-[#604024] focus:outline-none focus:ring-2 focus:ring-[#9F709A]" placeholder="Ucapan & Doa"></textarea>
-          </div>
-          <button type="submit" class={`${btnPrimary} w-full mb-2`}>Kirim</button>
-          <button id="closeRsvpModalBtn" type="button" class="w-full rounded-md bg-gray-200 px-4 py-2 text-sm text-[#604024]">Batal</button>
-        </form>
-      </div>
+  <!-- 9. PENUTUP -->
+  <li class="section" style="padding-top:0">
+    <div class="fbleed animate fadeInUp" style="margin-top:0;margin-bottom:34px"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></div>
+    <div class="inner">
+      <img class="orn animate zoomIn" src="/images/Bugis-Asset-3.webp" alt="logo" style="width:96px" />
+      <div class="text animate fadeInDown" style="margin-bottom:8px">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu.</div>
+      <div class="text animate fadeInDown" style="margin-bottom:18px">See you on our wedding day!</div>
+      <div class="title animate zoomIn" style="font-family:'Great Vibes',cursive;font-size:52px;color:var(--gold-lite)">Fahrul &amp; Ainun</div>
+      <div class="text animate fadeInUp" style="margin-top:10px;font-size:13px">Kel. Bapak Azali Mudjahid Pawelloi, S.E<br />&amp; Ibu Nursaida Said</div>
     </div>
-  </main>
+    <div class="fbleed flip animate fadeInUp" style="margin-top:34px;margin-bottom:0"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></div>
+  </li>
 
-  <style is:global>
-    :root {
-      --inv-bg: #ded7c7;
-      --inv-base: #604024;
-      --inv-accent: #9F709A;
-      --inv-border: #747254;
-      --reveal-duration: 1s;
-      --reveal-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0; padding: 0;
-      font-family: "Marcellus", serif;
-      background-color: var(--inv-bg);
-      color: var(--inv-base);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    body.not-open, body.is-loading { overflow: hidden !important; height: 100vh; }
-    img { max-width: 100%; }
+</ul>
+</main>
 
-    .font-accent { font-family: "Against", "Marcellus", serif; }
-    .font-latin { font-family: "English111 Vivace BT", "Marcellus", cursive; }
+<div class="fabs">
+  <div class="fab" id="btnMusic" title="Musik">&#9835;</div>
+</div>
+<div class="to-top" id="toTop"><div class="fab">&#8593;</div></div>
 
-    /* Wave bunga */
-    @keyframes wave-left { 0% { transform: rotate(-3deg); } 100% { transform: rotate(4deg); } }
-    @keyframes wave-right { 0% { transform: rotate(3deg); } 100% { transform: rotate(-4deg); } }
-    .wave-left img, .wave-right img { will-change: transform; backface-visibility: hidden; }
-    .wave-left img { animation: wave-left 5s ease-in-out infinite alternate; }
-    .wave-right img { animation: wave-right 5s ease-in-out infinite alternate; }
+<script is:inline>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var loader=document.getElementById('loader');
+  var intro=document.getElementById('intro');
+  var video=document.getElementById('introVideo');
+  var pct=document.getElementById('pct');var bar=document.getElementById('bar');
+  document.body.classList.add('is-loading','not-open');
+  var imgs=[].slice.call(document.querySelectorAll('img[src]')).map(function(i){return i.getAttribute('src');});
+  var total=(imgs.length||1)+1,loaded=0;
+  function upd(){var p=Math.min(100,Math.round(loaded/total*100));if(pct)pct.textContent=p;if(bar)bar.style.width=p+'%';}
+  function one(u){return new Promise(function(res){var im=new Image();im.onload=im.onerror=function(){loaded++;upd();res();};im.src=u;});}
+  function preloadVideo(){return new Promise(function(res){
+    try{ if(video){ video.load();
+      var done=function(){loaded++;upd();res();};
+      video.addEventListener('canplaythrough',done,{once:true});
+      video.addEventListener('error',done,{once:true});
+      setTimeout(done,5000);
+    } else { loaded++;upd();res(); } }catch(e){ loaded++;upd();res(); }
+  });}
+  var started=false;
+  function startIntro(){ if(started)return;started=true;
+    loaded=total;upd();
+    document.body.classList.remove('is-loading');
+    if(loader){loader.classList.add('loaded');setTimeout(function(){loader.remove();},900);}
+    if(!intro||!video||reduce){ finishIntro(); return; }
+    intro.classList.add('show');
+    var ended=false;
+    var end=function(){ if(ended)return;ended=true; finishIntro(); };
+    video.addEventListener('ended',end,{once:true});
+    var dur=(isFinite(video.duration)&&video.duration>0)?video.duration:10;
+    setTimeout(end,(dur+1.5)*1000);
+    var pr=video.play();
+    if(pr&&pr.catch){ pr.catch(function(){ setTimeout(end,10000); }); }
+  }
+  function finishIntro(){
+    if(intro){ intro.classList.add('up'); setTimeout(function(){ intro.remove(); },1000); }
+    initReveal();
+  }
+  Promise.all(imgs.map(one).concat([preloadVideo()])).then(function(){ setTimeout(startIntro,400); });
+  setTimeout(startIntro,12000);
+  upd();
+  var revInit=false;
+  function initReveal(){if(revInit)return;revInit=true;var els=document.querySelectorAll('.animate');
+    if(reduce||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-visible');});return;}
+    var ob=new IntersectionObserver(function(en,o){en.forEach(function(t){if(t.isIntersecting){t.target.classList.add('is-visible');o.unobserve(t.target);}});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(e){ob.observe(e);});}
+  document.getElementById('btnOpen').addEventListener('click',function(){document.body.classList.remove('not-open');document.getElementById('main').scrollIntoView({behavior:'smooth'});});
+  var toTop=document.getElementById('toTop');
+  window.addEventListener('scroll',function(){toTop.classList.toggle('show',(window.scrollY||0)>350);},{passive:true});
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});});
+  var cd=document.getElementById('cd');
+  if(cd){var tgt=new Date(cd.dataset.datetime).getTime();var p=function(n){return String(n).padStart(2,'0');};
+    function tick(){var df=tgt-Date.now();if(isNaN(df)||df<0)df=0;
+      document.getElementById('d').textContent=p(Math.floor(df/864e5));
+      document.getElementById('h').textContent=p(Math.floor(df%864e5/36e5));
+      document.getElementById('m').textContent=p(Math.floor(df%36e5/6e4));
+      document.getElementById('s').textContent=p(Math.floor(df%6e4/1e3));}
+    tick();setInterval(tick,1000);}
+})();
+</script>
 
-    /* Reveal saat scroll (ringan, opacity + transform) */
-    .animate__animated {
-      opacity: 0;
-      transition: opacity var(--reveal-duration) ease, transform var(--reveal-duration) var(--reveal-ease);
-      will-change: opacity, transform;
-      backface-visibility: hidden;
-    }
-    .animate__fadeInUp { transform: translate3d(0, 22px, 0); }
-    .animate__fadeInDown { transform: translate3d(0, -22px, 0); }
-    .animate__fadeInLeft { transform: translate3d(-22px, 0, 0); }
-    .animate__fadeInRight { transform: translate3d(22px, 0, 0); }
-    .animate__zoomIn { transform: scale(0.94); }
-    .animate__animated.is-visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-    .animate__animated.reveal-done { will-change: auto; }
-
-    /* Preloader / landing loader */
-    .loader-wrapper {
-      position: fixed; inset: 0;
-      background: radial-gradient(120% 120% at 50% 0%, #ffffff 0%, var(--inv-bg) 100%);
-      z-index: 99999; display: flex; justify-content: center; align-items: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    .loader-wrapper.loaded { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader-box { animation: loader-fade-in 0.7s var(--reveal-ease) both; }
-    @keyframes loader-fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .loader-ring { animation: rotation 0.9s linear infinite; }
-    @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .loader-bar-fill { transition: width 0.25s ease; }
-
-    /* Tombol kembali ke atas */
-    .btn-to-top {
-      opacity: 0; visibility: hidden; transform: translateY(16px) scale(0.9);
-      transition: opacity 0.35s ease, transform 0.35s var(--reveal-ease), visibility 0.35s ease;
-    }
-    .btn-to-top.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .animate__animated { opacity: 1 !important; transform: none !important; transition: none !important; }
-      .wave-left img, .wave-right img, .loader-ring, .loader-box { animation: none !important; }
-    }
-  </style>
-
-  <script is:inline>
-    (function () {
-      const run = () => {
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        // 1. PRELOADER / LANDING LOADER
-        const loader = document.getElementById('loader');
-        const percentEl = document.getElementById('loaderPercent');
-        const barEl = document.getElementById('loaderBar');
-
-        document.body.classList.add('is-loading', 'not-open');
-
-        const assetUrls = new Set();
-        assetUrls.add('/images/bg2.webp');
-        assetUrls.add('/images/p2.jpg');
-        document.querySelectorAll('img[src]').forEach((img) => {
-          const src = img.getAttribute('src');
-          if (src && !src.startsWith('data:')) assetUrls.add(src);
-        });
-
-        const urls = Array.from(assetUrls);
-        const total = urls.length || 1;
-        let loadedCount = 0;
-
-        const updateProgress = () => {
-          const pct = Math.min(100, Math.round((loadedCount / total) * 100));
-          if (percentEl) percentEl.textContent = pct;
-          if (barEl) barEl.style.width = pct + '%';
-        };
-
-        const preloadOne = (url) =>
-          new Promise((resolve) => {
-            const img = new Image();
-            const done = () => { loadedCount++; updateProgress(); resolve(); };
-            img.onload = done;
-            img.onerror = done;
-            img.src = url;
-          });
-
-        let loaderHidden = false;
-        const hideLoader = () => {
-          if (loaderHidden) return;
-          loaderHidden = true;
-          loadedCount = total;
-          updateProgress();
-          document.body.classList.remove('is-loading');
-          if (loader) {
-            loader.classList.add('loaded');
-            loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-            setTimeout(() => loader && loader.remove(), 900);
-          }
-          initReveal();
-        };
-
-        const MIN_SHOW = 900;
-        const startedAt = performance.now();
-        const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
-
-        Promise.all([Promise.all(urls.map(preloadOne)), fontsReady]).then(() => {
-          const elapsed = performance.now() - startedAt;
-          const wait = Math.max(0, MIN_SHOW - elapsed);
-          setTimeout(hideLoader, wait);
-        });
-        setTimeout(hideLoader, 7000);
-        updateProgress();
-
-        // 2. REVEAL saat elemen masuk layar
-        let revealInitialized = false;
-        function initReveal() {
-          if (revealInitialized) return;
-          revealInitialized = true;
-          const animatedElements = document.querySelectorAll('.animate__animated');
-          if (reduceMotion || !('IntersectionObserver' in window)) {
-            animatedElements.forEach((el) => el.classList.add('is-visible', 'reveal-done'));
-            return;
-          }
-          const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                const el = entry.target;
-                el.classList.add('is-visible');
-                el.addEventListener('transitionend', () => el.classList.add('reveal-done'), { once: true });
-                obs.unobserve(el);
-              }
-            });
-          }, { root: null, threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-          animatedElements.forEach((el) => observer.observe(el));
-        }
-
-        // 3. Tombol Open Invitation
-        const openBtn = document.getElementById('btnOpenInvitation');
-        const mainContent = document.getElementById('mainContent');
-        const audio = document.getElementById('music');
-        if (openBtn) {
-          openBtn.addEventListener('click', () => {
-            document.body.classList.remove('not-open');
-            if (mainContent) mainContent.scrollIntoView({ behavior: 'smooth' });
-            if (audio) audio.play().catch((err) => console.log('Autoplay ditolak browser:', err));
-          });
-        }
-
-        // 4. Tombol Kontrol Musik
-        const musicBtn = document.getElementById('btnMusic');
-        if (musicBtn && audio) {
-          musicBtn.addEventListener('click', () => { audio.paused ? audio.play() : audio.pause(); });
-        }
-
-        // 5. Modal Helper (QR & RSVP) — pakai kelas hidden/flex Tailwind
-        const toggleModal = (modalId, show) => {
-          const modal = document.getElementById(modalId);
-          const overlay = document.getElementById('modalOverlay');
-          if (!modal || !overlay) return;
-          modal.classList.toggle('hidden', !show);
-          modal.classList.toggle('flex', show);
-          overlay.classList.toggle('hidden', !show);
-        };
-        document.getElementById('btnQrModal')?.addEventListener('click', () => toggleModal('qrModal', true));
-        document.getElementById('closeQrModalBtn')?.addEventListener('click', () => toggleModal('qrModal', false));
-        document.getElementById('btnOpenRsvpModal')?.addEventListener('click', () => toggleModal('rsvpModal', true));
-        document.getElementById('closeRsvpModalBtn')?.addEventListener('click', () => toggleModal('rsvpModal', false));
-        document.getElementById('modalOverlay')?.addEventListener('click', () => {
-          toggleModal('qrModal', false);
-          toggleModal('rsvpModal', false);
-        });
-
-        // 6. Tombol Kembali ke Atas
-        const backToTopBtn = document.getElementById('btnBackToTop');
-        if (backToTopBtn) {
-          const SHOW_AFTER = 350;
-          let ticking = false;
-          const syncBackToTop = () => {
-            const scrolled = window.scrollY || document.documentElement.scrollTop;
-            backToTopBtn.classList.toggle('show', scrolled > SHOW_AFTER);
-            ticking = false;
-          };
-          window.addEventListener('scroll', () => {
-            if (!ticking) { window.requestAnimationFrame(syncBackToTop); ticking = true; }
-          }, { passive: true });
-          backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-          });
-          syncBackToTop();
-        }
-
-        // 7. Countdown (Waktu Acara)
-        const countdownWrapper = document.querySelector('.countdown-wrapper');
-        if (countdownWrapper && countdownWrapper.dataset.datetime) {
-          const target = new Date(countdownWrapper.dataset.datetime).getTime();
-          const elDay = countdownWrapper.querySelector('.day .number');
-          const elHour = countdownWrapper.querySelector('.hour .number');
-          const elMinute = countdownWrapper.querySelector('.minute .number');
-          const elSecond = countdownWrapper.querySelector('.second .number');
-          const pad = (n) => String(n).padStart(2, '0');
-          const updateCountdown = () => {
-            let diff = target - Date.now();
-            if (isNaN(diff) || diff < 0) diff = 0;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            if (elDay) elDay.textContent = pad(days);
-            if (elHour) elHour.textContent = pad(hours);
-            if (elMinute) elMinute.textContent = pad(minutes);
-            if (elSecond) elSecond.textContent = pad(seconds);
-          };
-          updateCountdown();
-          setInterval(updateCountdown, 1000);
-        }
-      };
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-      } else {
-        run();
-      }
-    })();
-  </script>
 </body>
 </html>
