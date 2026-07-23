@@ -247,7 +247,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 /* ===== intro video (tampil setelah preload) + cover top ===== */
 .intro{position:fixed;inset:0;z-index:99997;background:#0b0505;display:flex;align-items:center;justify-content:center;
   opacity:0;visibility:hidden;
-  transition:transform .9s var(--reveal-ease),opacity .5s ease,visibility .5s ease}
+  transition:transform .9s var(--reveal-ease)}
 .intro.show{opacity:1;visibility:visible}
 .intro.up{transform:translateY(-100%)}
 .intro video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
@@ -496,7 +496,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       <div class="text animate fadeInDown" style="margin-bottom:8px">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu.</div>
       <div class="text animate fadeInDown" style="margin-bottom:18px">See you on our wedding day!</div>
       <div class="title animate zoomIn" style="font-family:'Great Vibes',cursive;font-size:52px;color:var(--gold-lite)">Fahrul &amp; Ainun</div>
-      <div class="text animate fadeInUp" style="margin-top:10px;font-size:13px">Kel. Bapak Azali Mudjahid Pawelloi, S.E<br />&amp; Ibu Nursaida Said</div>
+   
     </div>
     
   </li>
@@ -562,9 +562,13 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
   var started=false;
   function startIntro(){ if(started)return;started=true;
     loaded=total;upd();
-    document.body.classList.remove('is-loading');
-    if(loader){loader.classList.add('loaded');setTimeout(function(){loader.remove();},900);}
-    if(!intro||!video||reduce){ finishIntro(); return; }
+    if(!intro||!video||reduce){
+      document.body.classList.remove('is-loading');
+      if(loader){loader.classList.add('loaded');setTimeout(function(){loader.remove();},900);}
+      finishIntro(); return;
+    }
+    // Tampilkan video intro secara INSTAN & penuh dulu (di bawah loader yang masih menutup rapat),
+    // baru loader dipudarkan -> yang langsung terlihat adalah VIDEO, tanpa kedip halaman pembuka.
     intro.classList.add('show');
     var ended=false;
     var end=function(){ if(ended)return;ended=true; finishIntro(); };
@@ -573,6 +577,11 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
     setTimeout(end,(dur+1.5)*1000);
     var pr=video.play();
     if(pr&&pr.catch){ pr.catch(function(){ setTimeout(end,10000); }); }
+    // Sembunyikan loader setelah video sudah terpasang penuh di layar
+    requestAnimationFrame(function(){
+      document.body.classList.remove('is-loading');
+      if(loader){loader.classList.add('loaded');setTimeout(function(){loader.remove();},900);}
+    });
   }
   function finishIntro(){
     if(intro){ intro.classList.add('up'); setTimeout(function(){ intro.remove(); },1000); }
