@@ -80,6 +80,11 @@ const jsonLd = {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Marcellus&display=swap" />
+  <!-- Favicon (logo UF) -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <!-- Lenis smooth scroll (ringan ~10KB, otomatis di-cache browser) -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <style>
@@ -200,7 +205,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 /* gift */
 .gift-card{margin-top:14px;padding:22px;border-radius:10px;border:1px solid var(--gold);background:rgba(0,0,0,.3);text-align:left}
 .bank-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.bank-logo{width:80px;height:48px;border-radius:6px;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:Arial,sans-serif}
+.bank-logo{width:80px;height:48px;border-radius:6px;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:Arial,sans-serif;font-size:14px;text-align:center;padding:0 4px}
 .bank-num{font-weight:700;font-size:17px;color:var(--cream-lite)}
 
 /* card panel */
@@ -230,6 +235,9 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 .fabs{position:fixed;bottom:24px;right:20px;z-index:999;display:flex;flex-direction:column;align-items:end;gap:10px}
 .fab{width:46px;height:46px;border-radius:50%;background:var(--maroon);color:var(--cream-lite);border:1px solid rgba(215,169,22,.5);
   display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.4);cursor:pointer}
+/* Tombol musik: garis miring hanya saat non-aktif (muted) */
+#btnMusic{position:relative;overflow:hidden}
+#btnMusic.muted::after{content:"";position:absolute;top:50%;left:50%;width:150%;height:2.5px;border-radius:2px;background:var(--cream-lite);box-shadow:0 0 0 1.5px var(--maroon);transform:translate(-50%,-50%) rotate(-45deg)}
 .to-top{position:fixed;bottom:24px;left:20px;z-index:999;opacity:0;visibility:hidden;transform:translateY(16px) scale(.9);transition:.35s var(--reveal-ease)}
 .to-top.show{opacity:1;visibility:visible;transform:none}
 
@@ -242,7 +250,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 .intro video{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
 .cover .col{padding-top:0}
 .cover-top{width:100%}
-.logonama{width:74%;max-width:290px;height:auto;margin:16px auto 0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.55))}
+.logonama{width:54%;max-width:200px;height:auto;margin:16px auto 0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.55))}
 .open-wrap{text-align:center;width:100%}
 
 /* ===== Responsive 360px -> 1920px: full-bleed & konten membesar proporsional ===== */
@@ -258,7 +266,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
 .guest-card .to{font-size:clamp(14px,1vw,22px)}
 .guest-card .name{font-size:clamp(17px,1.4vw,30px)}
 .btn{font-size:clamp(14px,1.05vw,24px);padding:clamp(11px,1vw,22px) clamp(26px,2.4vw,58px)}
-.logonama{max-width:clamp(290px,32vw,660px)}
+.logonama{max-width:clamp(200px,22vw,440px)}
 .photo-round{width:clamp(200px,22vw,440px)!important;height:clamp(200px,22vw,440px)!important}
 .photo-rect{max-width:clamp(320px,42vw,780px)}
 .datebox .day .num{font-size:clamp(56px,6vw,120px)}
@@ -357,7 +365,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
   <li class="section">
     <div class="inner">
       <img class="orn animate zoomIn" src="/images/Bugis-Asset-3.webp" alt="ornamen" style="width:78px" />
-      <div class="photo-round animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.05.webp" alt="Mempelai Pria" /></div>
+      <div class="photo-round animate zoomIn"><img src="/images/fahrul.webp" alt="Mempelai Pria" /></div>
       <div class="name-big animate fadeInLeft">Muhammad Fahrul Azali, S.IP</div>
       <div class="text animate fadeInUp" style="margin-bottom:22px">Putra ke-dua dari<br />Bapak Azali Mudjahid Pawelloi, S.E &amp;<br />Ibu Nursaida Said</div>
       <div class="dengan animate zoomIn">dengan</div>
@@ -440,13 +448,13 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       <div class="gallery">
         <div class="gcol">
           <div class="gitem h150 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.11.09.webp" alt="g1" /></div>
-          <div class="gitem h280 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.15.webp" alt="g2" /></div>
-          <div class="gitem h220 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.04.webp" alt="g3" /></div>
+          <div class="gitem h280 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2012.58.13%20(1).webp" alt="g2" /></div>
+          <div class="gitem h220 animate zoomIn"><img src="/images/ulfa.webp" alt="g3" /></div>
         </div>
         <div class="gcol">
-          <div class="gitem h280 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.05.webp" alt="g4" /></div>
+          <div class="gitem h280 animate zoomIn"><img src="/images/fahrul.webp" alt="g4" /></div>
           <div class="gitem h150 animate zoomIn"><img src="/images/wa.webp" alt="g5" /></div>
-          <div class="gitem h220 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2012.58.13%20(1).webp" alt="g6" /></div>
+          <div class="gitem h220 animate zoomIn"><img src="/images/WhatsApp%20Image%202026-07-22%20at%2013.33.15.webp" alt="g6" /></div>
         </div>
       </div>
     </div>
@@ -462,12 +470,12 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       <div class="text animate fadeInDown" style="margin-bottom:18px">Doa restu Anda merupakan karunia yang sangat berarti. Namun jika memberi adalah tanda kasih, Anda dapat mengirim hadiah melalui:</div>
       <div class="gift-card animate zoomIn">
         <div class="bank-row">
-          <div class="bank-logo">BCA</div>
-          <div><div class="bank-num">1234567890</div><div class="text" style="color:var(--cream)">a.n. Muhammad Fahrul Azali</div></div>
+          <div class="bank-logo">Mandiri</div>
+          <div><div class="bank-num">1700014264638</div><div class="text" style="color:var(--cream)">a.n. Muhammad Fahrul Azali</div></div>
         </div>
         <div class="bank-row" style="margin-bottom:0">
-          <div class="bank-logo">BNI</div>
-          <div><div class="bank-num">1234567890</div><div class="text" style="color:var(--cream)">a.n. Ainun Ulfa</div></div>
+          <div class="bank-logo">BSI</div>
+          <div><div class="bank-num">7326679237</div><div class="text" style="color:var(--cream)">a.n. Ainun Ulfa</div></div>
         </div>
       </div>
       <div class="gift-card animate zoomIn" style="text-align:center">
@@ -485,10 +493,12 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
       <div class="text animate fadeInDown" style="margin-bottom:8px">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu.</div>
       <div class="text animate fadeInDown" style="margin-bottom:18px">See you on our wedding day!</div>
       <div class="title animate zoomIn" style="font-family:'Great Vibes',cursive;font-size:52px;color:var(--gold-lite)">Fahrul &amp; Ainun</div>
-      <div class="text animate fadeInUp" style="margin-top:10px;font-size:13px">Kel. Bapak Azali Mudjahid Pawelloi, S.E<br />&amp; Ibu Nursaida Said</div>
+     
     </div>
-    <div class="fbleed flip animate fadeInUp" style="margin-top:34px;margin-bottom:0"><img src="/images/Bugis-Asset-1-Copy-2048x344.webp" alt="pembatas" /></div>
+  
   </li>
+
+  <li class="secdiv flip animate fadeInUp"><img src="/images/Bugis-Asset-1-Copy2-2048x344.webp" alt="pembatas" /></li>
 
 </ul>
 </main>
@@ -563,6 +573,8 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
   function finishIntro(){
     if(intro){ intro.classList.add('up'); setTimeout(function(){ intro.remove(); },1000); }
     initReveal();
+    introDone=true;
+    playMusic(); // coba putar musik otomatis begitu masuk halaman pembuka (setelah video)
   }
   Promise.all(imgs.map(one).concat([preloadMedia(video),preloadMedia(bgm),preloadFonts()])).then(function(){ setTimeout(startIntro,400); });
   setTimeout(startIntro,20000); // safety net (total aset ~5.5MB)
@@ -575,7 +587,7 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
     els.forEach(function(e){ob.observe(e);});}
   /* ===== Buka undangan: lepas kunci scroll, mulai Lenis, putar musik ===== */
   var playing=false;
-  function syncMusic(){var b=document.getElementById('btnMusic');if(b)b.style.opacity=playing?'1':'.55';}
+  function syncMusic(){var b=document.getElementById('btnMusic');if(b){b.style.opacity=playing?'1':'.7';b.classList.toggle('muted',!playing);}}
   function playMusic(){if(!bgm)return;var pr=bgm.play();if(pr&&pr.then){pr.then(function(){playing=true;syncMusic();}).catch(function(){});}}
   document.getElementById('btnOpen').addEventListener('click',function(){
     document.body.classList.remove('not-open');
@@ -594,6 +606,13 @@ ul.sections{list-style:none;margin:0;padding:0;display:flex;flex-direction:colum
     else{var pr=bgm.play();if(pr&&pr.then){pr.then(function(){playing=true;syncMusic();}).catch(function(){});}}
   });
   syncMusic();
+  // Fallback: jika browser memblokir autoplay, mulai musik pada sentuhan/interaksi PERTAMA user (setelah video intro).
+  // Hanya sekali: setelah itu kendali sepenuhnya ada di tombol musik (kalau user mematikan, tidak dinyalakan ulang).
+  var introDone=false, kicked=false;
+  function kickMusic(){ if(introDone&&!kicked){ kicked=true; playMusic(); } }
+  ['pointerdown','touchstart','click','keydown','scroll','wheel'].forEach(function(ev){
+    window.addEventListener(ev,kickMusic,{passive:true});
+  });
   var cd=document.getElementById('cd');
   if(cd){var tgt=new Date(cd.dataset.datetime).getTime();var p=function(n){return String(n).padStart(2,'0');};
     function tick(){var df=tgt-Date.now();if(isNaN(df)||df<0)df=0;
